@@ -1,0 +1,214 @@
+// VerilogA for dgjlt veriloga
+'include "constants.va"
+'include "disciplines.va"
+module dgjlt(Vy,Vx,Vb,Vg);
+electrical Vy, Vx, Vb, Vg, a;
+parameter real tipe = 1;
+parameter real W = le-4;
+parameter real Lgdr = 80e-7;
+parameter real XL=O;//-30e-7;
+parameter real dLg = 10.5e-7;
+parameter real Cg = 2.2e-6;
+parameter  real etov = 1.4e-7;
+parameter real delta = 0.051;
+parameter real S = 0.09;
+parameter real Rs0 =120*(le-4);
+parameter real Cif = (le-12);
+parameter real Cof = 2e-13;
+parameter real vxo = 0.765e7;
+parameter real rv = 1.8;
+parameter real zeta= 1.8;
+parameter real mu = 354;
+parameter real beta = 1.7;
+parameter real phit = 0.0256;
+parameter real phib = 0.9;
+parameter real gamma =0.45;
+parameter real VtO = 0.486;
+parameter real alpha = 3.5;
+parameter real mc=100;
+realRd,Vgg,Vbb,Vd,VtOb,n,Qref,vv,FF,Qinv,Vdsats,Vdsat,Fsat,dvg,dvd,Vtp,eVg,eta,v,eVtp,xdn,qsqdQ,Qyinv,dir,FFit,Qxif,Qyif,Qxov,Qyov,Cov,psis,FFv,vxO,sign,Rs,Leff,Qg,Qx,Qy,Qb,VtOx,VtOy,FFx,FFy,Vgt,aa,Vdsatq,Fsatq,qi,Qinvq,Vxint,Vyint,meqeqs,
+qdc,kq,qsb,qdb,kFsatq,etai,qdtemp,QinvidQinv,igib,ix,iy,capj,Ec,vdssmoothcapA,capB,Ap,Bp,qsvO,qdvO,qsv,qdv,kvsatq;
+analog function real smoothabs;
+input x, smoothing;
+real x,smoothing;
+begin
+smoothabs=sqrt(x*x+smoothing);
+end
+endfunction
+analog function real smoothmax;
+input c,b,smoothing;
+real cb,smoothing;
+begin
+smoothmax=0.5*(c+b+smoothabs(c-b,smoothing));
+end
+endfunction
+analog function real smoothsign;
+input x, smoothing;
+real xsmoothing;
+begin
+smoothsign=x/sqrt(x*x+smoothing);
+end
+endfunction
+analog function real safesqrt;
+input x, smoothing;
+real x,smoothing;
+begin
+safesqrt=sqrt(O.5*(smoothabs(x,smoothing)+x)+1e-16);
+end
+endfunction
+analog function real safeexp;
+input x, maxslope;
+real xmaxslopebreakpoint;
+begin
+breakpoint=ln(maxslope);
+if(x<=breakpoint)
+safeexp=exp(x);
+else safeexp = maxslope+maxslope*(x-breakpoint);
+end
+endfunction
+
+analog function real safeln;
+input x,smoothing;
+real x,smoothing;
+begin
+end
+endfunction
+safeln=ln(O.5*(smoothabs(x,smoothing)+x)+1e-16);
+analog begin
+if (tipe*(V(Vg)-V(Vx))>tipe*(V(Vg)-V(Vy))) begin
+Vd=abs(V(Vy)-V(Vx));
+end
+else
+Vd=abs(V(Vx)-V(Vy));
+if (tipe*(V(Vg)-V(Vx))>tipe*(V(Vg)-V(Vy))) begin
+Vgg=tipe*(V(Vg)-V(Vx));
+end
+else
+Vgg=tipe*(V(Vg)-V(Vy));
+if (tipe*(V(Vg)-V(Vx))>tipe*
+dir=1;
+end
+else
+dir=-1;
+(V(Vg)-V(Vy))) begin
+if (tipe*(V(Vb)-V(Vx))>tipe*(V(Vb)-V(Vy))) begin
+Vbb=tipe*(V(Vb)-V(Vx));
+end
+else
+Vbb=tipe*(V(Vb)-V(Vy));
+if (tipe==1) begin
+capj=0.158*(le-ll);
+end
+else
+capj=0.1*(le-ll);
+
+//The calculation of dc current:
+Leff=Lgdr+XL-dLg;
+Rs=RsO/W;
+Rd = Rs;
+n = S/(2.3*phit);
+Qref=Cg*n*phit;
+me=(9.le-31)*mc;
+qe=1.602e-19;
+dvg=(dir*tipe)*Rs*I(Vy,Vx);
+dvd=(dir*tipe)*(Rs+Rd)*I(Vy,Vx);
+VtOb=VtO+gamma*(sqrt(phib-(Vbb-dvg))-sqrt(phib));
+Vtp=VtOb-(Vd-dvd)*delta-alpha/2*phit;
+eVg=exp((Vgg-dvg-Vtp)/(alpha*phit));
+FF=1/(1+eVg);
+eta=((Vgg-dvg)-(Vtob-(Vd-dvd)*delta-FF*alpha*phit))/(n*phit);
+Qinv = Qref*ln(1+exp(eta));
+Vdsats=vxo*(Leff)/mu;
+Vdsat=Vdsats*(1-FF)+phit*FF;
+Fsat=((Vd-dvd)/Vdsat)/(pow((1+pow(((Vddvd)/
+Vdsat),beta)),(1/beta)));
+FFv=l/(1+exp((Vgg-dvg-(VtOb-(Vddvd)*
+delta+phit*pow(zeta,2)/2))/(zeta*phit)));
+vxO=(FFv/rv+(1-FFv))*vxo;
+v=vxO*Fsat;
+eVtp=exp(-Vtp/(alpha*phit));
+Cov = (0.345e-12/etov)*dLg/2+Cof;
+//The calculation of charges:
+aa=l+gamma/(2*sqrt(phib-Vbb+dvg));
+qi=(2/3)*(1+x+pow(x,2))/(1+x);
+Qinvq=Qinv*qi;
+Vxint=V(Vx)+(tipe*dir)*dvg;
+Vyint=V(Vy)-(tipe*dir)*dvg;
+Vdsatq=sqrt(pow(3*phit,2)+pow((Vgt/aa),2));
+Fsatq=((Vd-dvd)/Vdsatq)/pow((1+pow(((Vddvd)/
+Vdsatq),beta)),(1/beta));
+VtOx=VtO+gamma*(sqrt(phib-(tipe*(V(Vb)-Vxint)))-sqrt(phib));
+VtOy=VtO+gamma*(sqrt(phib-(tipe*(V(Vb)-Vyint)))-sqrt(phib));
+FFx=1/(l+exp((tipe*(V(Vg)-Vxint)-(VtOx-(Vd-dvd)*deltaalpha/
+2*phit))/(alpha*phit)));
+FFy=l/(1+exp((tipe*(V(Vg)-Vyint)-(VtOy-(Vd-dvd)*deltaalpha/
+2*phit))/(alpha*phit)));
+Qxif=Cif*FFx*(V(Vg)-Vxint);
+Qyif=Cif*FFy*(V(Vg)-Vyint);
+
+x=(1-Fsatq);
+den=15*pow((1+x),2);
+qsc=(6+12*x+8*pow(x,2)+4*pow(x,3))/den;
+qdc=(4+8*x+12*pow(x,2)+6*pow(x,3))/den;
+//advanced charge models start here
+//ballistic transport
+kq=sqrt(2*(qe/me)*(Vd-dvd))/vxo*le2;
+qsb=((1/kq+1/kq/kq)*ln(1+kq)-1/kq);
+qdb=(1/kq/kq*(kq-ln(1+kq)));
+if (mc>99) begin
+kFsatq=O;
+end
+else
+kFsatq=1;
+if (kFsatq==1) begin
+kvsatq=O;
+end
+else
+kvsatq=1;
+Vgt=Qinv/Cg;
+//velcocity saturation
+Ec=l*vxo/mu;
+vdssmooth=Vgt/aa*2/(1+safesqrt(smoothmax(1,1+2*Vgt/aa/Ec/Leff,smo
+othing),smoothing))*Fsatq;
+capA=pow(aa,2)*pow(vdssmooth,2)/(12*Vgt-6*aa*vdssmooth);
+capB=(5*Vgt-2*aa*vdssmooth)/(10*Vgt-5*aa*vdssmooth);
+Ap=capA*(1+vdssmooth/(Leff)/Ec);
+Bp=capB*((pow(vdssmooth,2)*aa)/(2*Ec*Leff*(5*Vgt-
+2*vdssmooth*aa))+1);
+qsvO=Vgt/2-vdssmooth/6+Ap*(1-Bp);
+qdvO=Vgt/2-vdssmooth/3+Ap*Bp;
+qsv=qsvO/Vgt;
+qdv=qdvO/Vgt;
+//kFsatq=O for classical D/D and =1 for ballistic
+qs=((1-kvsatq)*qsc+kvsatq*qsv)*(1-kFsatq*Fsatq)+qsb*kFsatq*Fsatq;
+qdtemp=((1-kvsatq)*qdc+kvsatq*qdv)*(1-
+kFsatq*Fsatq)+qdb*kFsatq*Fsatq;
+// DIBL effect on drain charge calculation
+etai=((Vgg-dvg)-(VtOb-(Vd-dvd)*0-FF*alpha*phit))/(n*phit);
+Qinvi=Qref*ln(1+exp(etai));
+dQinv=Qinv-Qinvi;
+
+qd=(qdtemp-(l-FF)*qi*dQinv/Qinv);
+Qxinv=tipe*Leff*Qinv*((I+dir)*qs+(l-dir)*qd)/2;
+Qyinv=tipe*Leff*Qinv*((l-dir)*qs+(l+dir)*qd)/2;
+Qxov=Cov*(V(Vg)-Vxint);
+Qyov=Cov*(V(Vg)-Vyint);
+Qx=-W*(Qxinv+Qxov+Qxif);
+Qy=-W*(Qyinv+Qyov+Qyif);
+psis=phib+alpha*phit+phit*ln(ln(l+exp(eta)));
+Qb=-tipe*W*Leff*(Cg*gamma*sqrt(psis-(Vbb-dvg))+(aa-
+1)/aa*Qinvq*(l-qi));
+Qg=-(Qx+Qy+Qb);
+I(VyVx)<+(dir*tipe)*(W*Qinv*v);
+I(VxVb)<+capj*(0.5)*W*ddt(V(Vx)-V(Vb));
+I(VyVb)<+capj*(0.5)*W*ddt(V(Vy)-V(Vb));
+I(Vya)<+ ddt(Qy);
+I(Vxa)<+ ddt(Qx);
+I(Vga)<+ ddt(Qg);
+I(Vba)<+ ddt(Qb);
+iy=I(Vya);
+ix=I(Vxa);
+ig=I(Vga);
+ib=I(Vba);
+end
+endmodule
