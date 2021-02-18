@@ -134,6 +134,7 @@ extern struct coreInfo_t  coreInfo; /* cmexport.c */
 #include "adms/bsimbulk/bsimbulkitf.h"
 #include "adms/bsimcmg/bsimcmgitf.h"
 #include "adms/r2_cmc/r2_cmcitf.h"
+#include "adms/dgjlt/dgjltitf.h"
 #endif
 #ifdef CIDER
 /* Numerical devices (Cider integration) */
@@ -201,6 +202,7 @@ static SPICEdev *(*static_devices[])(void) = {
     get_vcvs_info,
     get_vsrc_info,
     get_vdmos_info,
+    get_dgjlt_info,
 
 #ifdef CIDER
     get_nbjt_info,
@@ -219,6 +221,7 @@ static SPICEdev *(*static_devices[])(void) = {
     (SPICEdev *(*)(void)) get_bsimbulk_info,
     (SPICEdev *(*)(void)) get_bsimcmg_info,
     (SPICEdev *(*)(void)) get_r2_cmc_info,
+    (SPICEdev *(*)(void)) get_dgjlt_info,
 #endif
 
 #ifdef NDEV
@@ -306,12 +309,12 @@ SPICEdev ** devices(void)
 #define DEVICES_USED {"asrc", "bjt", "vbic", "bsim1", "bsim2", "bsim3", "bsim3v32", "bsim3v2", "bsim3v1", "bsim4", "bsim4v5", "bsim4v6", "bsim4v7", \
                       "bsim4soi", "bsim3soipd", "bsim3soifd", "bsim3soidd", "hisim2", "hisimhv1",  "hisimhv2", \
                       "cap", "cccs", "ccvs", "csw", "dio", "hfet", "hfet2", "ind", "isrc", "jfet", "ltra", "mes", "mesa" ,"mos1", "mos2", "mos3", \
-                      "mos6", "mos9", "res", "soi3", "sw", "tra", "urc", "vccs", "vcvs", "vsrc", "hicum0", "bjt504t", "ekv", "psp102", "psp103", "bsimbulk", "bsimcmg"}
+                      "mos6", "mos9", "res", "soi3", "sw", "tra", "urc", "vccs", "vcvs", "vsrc", "hicum0", "bjt504t", "ekv", "psp102", "psp103", "bsimbulk", "bsimcmg","dgjlt"}
 #else
 #define DEVICES_USED {"asrc", "bjt", "vbic", "bsim1", "bsim2", "bsim3", "bsim3v32", "bsim3v2", "bsim3v1", "bsim4", "bsim4v5", "bsim4v6", "bsim4v7", \
                       "bsim4soi", "bsim3soipd", "bsim3soifd", "bsim3soidd", "hisim2", "hisimhv1", "hisimhv2", \
                       "cap", "cccs", "ccvs", "csw", "dio", "hfet", "hfet2", "ind", "isrc", "jfet", "ltra", "mes", "mesa" ,"mos1", "mos2", "mos3", \
-                      "mos6", "mos9", "res", "soi3", "sw", "tra", "urc", "vccs", "vcvs", "vsrc", "hicum2"}
+                      "mos6", "mos9", "res", "soi3", "sw", "tra", "urc", "vccs", "vcvs", "vsrc", "hicum2","dgjlt"}
 #endif
 int load_dev(char *name) {
   char *msg;
