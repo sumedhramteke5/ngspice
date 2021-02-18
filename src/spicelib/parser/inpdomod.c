@@ -397,6 +397,15 @@ char *INPdomodel(CKTcircuit *ckt, struct card *image, INPtables * tab)
 				    ("Device type PSP103 not available in this binary\n");
 			    }
 				break;
+			case 70:
+				type = INPtypelook("jlfet");
+				if (type < 0) {
+				    err =
+				      INPmkTemp
+				    ("Device type JLFET not available in this binary\n");
+			    }
+				break;
+					
 #endif
 			case 55:
 			    type = INPtypelook("B3SOIFD");
