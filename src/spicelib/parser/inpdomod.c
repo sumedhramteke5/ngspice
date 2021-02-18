@@ -44,36 +44,17 @@ char *INPdomodel(CKTcircuit *ckt, struct card *image, INPtables * tab)
 	
 	
 	
-	 /*  --------  Check if model is a jlfet --------- */
-    else if (strcmp(type_name, "njlt") == 0  ||
-	     strcmp(type_name, "pjlt") == 0) {
-			err = INPfindLev(line, &lev);
-			switch (lev) {
-			case 0:
-			case 1:
-			    type = INPtypelook("JLFET");
-			    if (type < 0) {
-				err =
-				    INPmkTemp
-				    ("Device type JLFET not available in this binary\n");
-			    }
-			    break;
-			case 2:
-			    type = INPtypelook("JLFET2");
-			    if (type < 0) {
-				err =
-				    INPmkTemp
-				    ("Device type JLFET2 not available in this binary\n");
-			    }
-			    break;
-			default:		/* placeholder; use level 3 for the next model */
-			    err =
-				INPmkTemp
-				("Only JLFET device levels 1-2 are supported in this binary\n");
-			    break;
-			}
-			INPmakeMod(modname, type, image);
-    }  /*   end  else if ((strcmp(typename, "njlt") == 0) */
+ /*  ------  Check if model is a JLFET ------- */
+    else if ((strcmp(type_name, "jlt") == 0) ||
+             (strcmp(type_name, "njlt") == 0) ||
+             (strcmp(type_name, "pjlt") == 0)) {
+        type = INPtypelook("JLFET");
+        if (type < 0) {
+            err =
+                INPmkTemp
+                ("Device type JLFET not available in this binary\n");
+        }
+        INPmakeMod(modname, type, image);
 
 
     /*  -----  Check if model is a BJT --------- */
