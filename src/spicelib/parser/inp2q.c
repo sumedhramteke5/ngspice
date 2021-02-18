@@ -15,12 +15,12 @@ Modified: 2001 Paolo Nenzi (Cider Integration)
 static int
 model_max_numnodes(int type)
 {
-    if (type == INPtypelook("VBIC") ||
-        type == INPtypelook("hicum2"))
+    if (type == INPtypelook("MOS") ||
+        type == INPtypelook("dgjlt"))
         return 5;
 #ifdef ADMS
-    if (type == INPtypelook("hicum0") ||
-        type == INPtypelook("bjt504t"))
+    if (type == INPtypelook("dgjlt") ||
+        type == INPtypelook("MOS1"))
         return 5;
 #endif
     return 4;
@@ -92,17 +92,17 @@ void INP2Q(CKTcircuit *ckt, INPtables * tab, struct card *current, CKTnode *gnod
     printf("INP2Q: Looking up model\n");
 #endif
 
-    if (thismodel->INPmodType != INPtypelook("BJT") &&
+    if (thismodel->INPmodType != INPtypelook("JLFET") &&
 #ifdef CIDER
-        thismodel->INPmodType != INPtypelook("NBJT") &&
-        thismodel->INPmodType != INPtypelook("NBJT2") &&
+        thismodel->INPmodType != INPtypelook("njlt") &&
+        thismodel->INPmodType != INPtypelook("pjlt") &&
 #endif
 #ifdef ADMS
-        thismodel->INPmodType != INPtypelook("hicum0") &&
-        thismodel->INPmodType != INPtypelook("bjt504t") &&
+        thismodel->INPmodType != INPtypelook("dgjlt") &&
+        thismodel->INPmodType != INPtypelook("MOS1") &&
 #endif
-        thismodel->INPmodType != INPtypelook("hicum2") &&
-        thismodel->INPmodType != INPtypelook("VBIC"))
+        thismodel->INPmodType != INPtypelook("dgjlt") &&
+        thismodel->INPmodType != INPtypelook("MOS"))
     {
         LITERR("incorrect model type");
         return;
@@ -123,8 +123,8 @@ void INP2Q(CKTcircuit *ckt, INPtables * tab, struct card *current, CKTnode *gnod
 
     if (waslead) {
 #ifdef CIDER
-        if (type == INPtypelook("NBJT2")) {
-            LITERR(" error: no unlabeled parameter permitted on NBJT2\n");
+        if (type == INPtypelook("pjlt")) {
+            LITERR(" error: no unlabeled parameter permitted on pjlt\n");
             return;
         }
 #endif
