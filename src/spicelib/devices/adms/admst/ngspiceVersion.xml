@@ -2288,7 +2288,7 @@
           </admst:new>
         </admst:if>
       </admst:when>
-      <admst:when test="[lower-case(name)='dgjltva']">
+      <admst:when test="[lower-case(name)='dgjlt']">
         <admst:if test="[nilled(variable[name='njlt'])]">
           <admst:value-of select="analog"/>
           <admst:value-of select="."/>
