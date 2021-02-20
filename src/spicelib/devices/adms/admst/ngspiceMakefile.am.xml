@@ -26,44 +26,44 @@
 
 <admst:template match="code">
 <admst:value-of select="attribute[name='ngspicename']/value"/>
-<admst:variable name="module" select="%s"/>
+<admst:variable name="dgjlt" select="%s"/>
 ## Process this file with automake to produce Makefile.in
 
 ADMSXMLINTERFACE=\$(srcdir)/../admst
 
-noinst_LTLIBRARIES = lib$(module).la
+noinst_LTLIBRARIES = lib$(dgjlt).la
 
 BUILT_SOURCES = \\
-	$(module).c	\\
-	$(module).hxx	\\
-	$(module)acld.c	\\
-	$(module).analogfunction.c \\
-	$(module)ask.c	\\
-	$(module)defs.h	\\
-	$(module)del.c	\\
-	$(module)dest.c	\\
-	$(module)ext.h	\\
-	$(module)guesstopology.c	\\
-	$(module)init.c	\\
-	$(module)init.h	\\
-	$(module)itf.h	\\
-	$(module)load.c	\\
-	$(module)mask.c	\\
-	$(module)mdel.c	\\
-	$(module)mpar.c	\\
-	$(module)par.c	\\
-	$(module)pzld.c	\\
-	$(module)setup.c	\\
-	$(module)temp.c	\\
-	$(module)trunc.c
+	$(dgjlt).c	\\
+	$(dgjlt).hxx	\\
+	$(dgjlt)acld.c	\\
+	$(dgjlt).analogfunction.c \\
+	$(dgjlt)ask.c	\\
+	$(dgjlt)defs.h	\\
+	$(dgjlt)del.c	\\
+	$(dgjlt)dest.c	\\
+	$(dgjlt)ext.h	\\
+	$(dgjlt)guesstopology.c	\\
+	$(dgjlt)init.c	\\
+	$(dgjlt)init.h	\\
+	$(dgjlt)itf.h	\\
+	$(dgjlt)load.c	\\
+	$(dgjlt)mask.c	\\
+	$(dgjlt)mdel.c	\\
+	$(dgjlt)mpar.c	\\
+	$(dgjlt)par.c	\\
+	$(dgjlt)pzld.c	\\
+	$(dgjlt)setup.c	\\
+	$(dgjlt)temp.c	\\
+	$(dgjlt)trunc.c
 
-lib$(module)_la_SOURCES = 	\\
+lib$(dgjlt)_la_SOURCES = 	\\
 	\$(BUILT_SOURCES)
 
 CLEANFILES = \\
 	\$(BUILT_SOURCES)	\\
-	$(module)noise.c	\\
-	.$(module).va.adms \\
+	$(dgjlt)noise.c	\\
+	.$(dgjlt).va.adms \\
 	.adms.implicit.xml \\
 	.interface.xml \\
 	constants.vams \\
@@ -72,8 +72,8 @@ CLEANFILES = \\
 	*.xml
 
 #TODO (not implemented) \\
-	$(module)conv.c	\\
-	$(module)getic.c
+	$(dgjlt)conv.c	\\
+	$(dgjlt)getic.c
 
 AM_CPPFLAGS = @AM_CPPFLAGS@ -I\$(top_srcdir)/src/include
 AM_CFLAGS = \$(STATIC)
@@ -144,7 +144,7 @@ DISTCLEANFILES = Makefile.am \\
 
 </admst:template>
 
-<admst:for-each select="/module">
+<admst:for-each select="/dgjlt">
   <admst:open file="Makefile.am">
     <admst:text format="##\n## Interface: %(/simulator/package_string)\n"/>
     <admst:text format="## created by: %(/simulator/fullname)\n"/>
