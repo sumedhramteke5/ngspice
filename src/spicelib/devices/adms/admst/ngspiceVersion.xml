@@ -1950,6 +1950,12 @@
         <admst:new datatype="attribute" arguments="ngspicename">
           <admst:push into="../attribute" select="." onduplicate="abort"/>
           <admst:value-to select="value" value="psp103"/>
+             </admst:new>
+      </admst:when>
+      <admst:when test="[lower-case(name)='dgjlt']">
+        <admst:new datatype="attribute" arguments="ngspicename">
+          <admst:push into="../attribute" select="." onduplicate="abort"/>
+          <admst:value-to select="value" value="dgjlt"/>
         </admst:new>
       </admst:when>
       <admst:otherwise>
