@@ -1,6 +1,62 @@
 // VerilogA for dgjlt veriloga
-'include "constants.h"
-'include "disciplines.h"
+//Default simulator: Spectre
+
+`ifdef insideADMS
+ `define P(p) (*p*)
+ `define PGIVEN(p)		$given(p)
+ `define INITIAL_MODEL		@(initial_model)
+`else
+ `define P(p)
+ `define PGIVEN(p)		p
+ `define INITIAL_MODEL		@(initial_step)
+`endif
+
+
+//ADS
+//`include "constants.vams"
+//`include "disciplines.vams"
+//`include "compact.vams"
+
+//Spectre
+`include "constants.h"
+`include "discipline.h"
+`define njlt 1
+`define pjlt -1
+
+`define EPSSI `P_EPS0*11.7
+`define EPSOX `P_EPS0*3.9
+`define TREF 300.15
+
+`define SQR(x) ((x)*(x))
+
+`define VT(temp) (`P_K*temp/`P_Q)
+`define EG(temp) (1.16-0.000702*`SQR(temp)/(temp+1108))
+`define NI(temp) (1.45e16*(temp/`TREF)*exp(`EG(`TREF)/(2*`VT(`TREF))-`EG(temp)/(2*`VT(temp))))
+
+
+`define oneThird              3.3333333333333333e-01
+
+// Constants needed in safe exponential function (called "expl")
+`define se05                  2.3025850929940458e+02
+`define ke05                  1.0e-100
+`define ke05inv               1.0e100
+
+//  P3       3rd order polynomial expansion of exp()
+`define P3(u) (1.0 + (u) * (1.0 + 0.5 * ((u) * (1.0 + (u) * `oneThird))))
+
+//  expl     exp() with 3rd order polynomial extrapolation
+//           to avoid overflows and underflows and retain C-3 continuity
+`define expl(x, res) \
+if (abs(x) < `se05) begin\
+    res       = exp(x); \
+end else begin \
+    if ((x) < -`se05) begin\
+        res       = `ke05 / `P3(-`se05 - (x)); \
+    end else begin\
+        res       =  `ke05inv * `P3((x) - `se05); \
+    end \
+end
+
 module dgjlt(Vy,Vx,Vb,Vg);
 electrical Vy, Vx, Vb, Vg, a;
 parameter real tipe = 1;
