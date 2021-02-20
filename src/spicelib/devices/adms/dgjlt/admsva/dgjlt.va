@@ -1,6 +1,6 @@
 // VerilogA for dgjlt veriloga
-'include "constants.va"
-'include "disciplines.va"
+'include "constants.h"
+'include "disciplines.h"
 module dgjlt(Vy,Vx,Vb,Vg);
 electrical Vy, Vx, Vb, Vg, a;
 parameter real tipe = 1;
