@@ -92,7 +92,7 @@ void INP2Q(CKTcircuit *ckt, INPtables * tab, struct card *current, CKTnode *gnod
     printf("INP2Q: Looking up model\n");
 #endif
 
-    if (thismodel->INPmodType != INPtypelook("JLFET") &&
+    if (thismodel->INPmodType != INPtypelook("DGJLT") &&
 #ifdef CIDER
         thismodel->INPmodType != INPtypelook("njlt") &&
         thismodel->INPmodType != INPtypelook("pjlt") &&
